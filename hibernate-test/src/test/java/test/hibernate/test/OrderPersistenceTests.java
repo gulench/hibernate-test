@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.classic.Session;
+import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -29,14 +29,29 @@ public class OrderPersistenceTests {
 	
 	@Test
 	@Transactional
+	public void testSetupItemCategory() {
+		Session session = sessionFactory.getCurrentSession();
+		Item item = new Item("PROD", 88.99d);
+		Category category = new Category("CAT1");
+		
+		session.save(category);
+		session.save(item);
+		ItemCategory itemCategory = new ItemCategory(category, item, "GULEN");
+		session.save(itemCategory);
+	}
+	
+	@Test
+	@Transactional
 	public void testSave() {
+		Session session = sessionFactory.getCurrentSession();
+		
 		Order order = new Order();
 		order.setCustomer("CUST");
-		Item item = new Item("PROD", 12.34d, 12);
+		OrderItem item = new OrderItem((Item) session.load(Item.class, 1L), 12);
 		item.setOrder(order);
 		order.getItems().add(item);
 		
-		sessionFactory.getCurrentSession().save(order);
+		session.save(order);
 		assertNotNull(order.getId());
 		
 		COPY = cloneOrder(order);
@@ -76,8 +91,8 @@ public class OrderPersistenceTests {
 		o.setVersion(order.getVersion());
 		o.setCustomer(order.getCustomer());
 		
-		for (Item item: order.getItems()) {
-			Item i = new Item(item.getProduct(), item.getPrice(), item.getQuantity());
+		for (OrderItem item: order.getItems()) {
+			OrderItem i = new OrderItem(item.getItem(), item.getQuantity());
 			i.setId(item.getId());
 			i.setVersion(item.getVersion());
 			i.setOrder(o);

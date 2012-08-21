@@ -25,7 +25,7 @@ public class HibernateConfiguration {
 		props.put("hibernate.show_sql", "true");
 
 		AnnotationSessionFactoryBean bean = new AnnotationSessionFactoryBean();
-		bean.setAnnotatedClasses(new Class[]{Item.class, Order.class});		
+		bean.setAnnotatedClasses(new Class[]{Item.class, Category.class, ItemCategory.class, OrderItem.class, Order.class});		
 		bean.setHibernateProperties(props);
 		bean.setDataSource(this.dataSource);
 		bean.setSchemaUpdate(true);

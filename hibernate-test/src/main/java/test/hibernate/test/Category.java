@@ -11,49 +11,39 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Item {
+public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column
-	private String product;
-	@Column
-	private double price;
+	private String name;
 
-	@OneToMany(mappedBy="item")
+	@OneToMany(mappedBy="category")
 	private Set<ItemCategory> itemCategories = new HashSet<ItemCategory>();
-
-	public Item() {
-	}
-
-	public Item(String product, double price) {
-		this.product = product;
-		this.price = price;
+	
+	public Category() {
+		
 	}
 	
-	public String getProduct() {
-		return product;
+	public Category(String name) {
+		this.name = name;
 	}
-
-	public void setProduct(String product) {
-		this.product = product;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Set<ItemCategory> getItemCategories() {

@@ -34,7 +34,7 @@ public class Order {
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumn(name="ORDER_ID")
-	private Collection<Item> items = new LinkedHashSet<Item>();
+	private Collection<OrderItem> items = new LinkedHashSet<OrderItem>();
 
 	/**
 	 * @return the customer
@@ -53,14 +53,14 @@ public class Order {
 	/**
 	 * @return the items
 	 */
-	public Collection<Item> getItems() {
+	public Collection<OrderItem> getItems() {
 		return items;
 	}
 
 	/**
 	 * @param items the items to set
 	 */
-	public void setItems(Collection<Item> items) {
+	public void setItems(Collection<OrderItem> items) {
 		this.items = items;
 	}
 
