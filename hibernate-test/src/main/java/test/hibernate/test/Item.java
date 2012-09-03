@@ -3,11 +3,13 @@ package test.hibernate.test;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -20,8 +22,11 @@ public class Item {
 	private String product;
 	@Column
 	private double price;
+	
+	@ManyToOne
+	private Inventory inventory;
 
-	@OneToMany(mappedBy="item")
+	@OneToMany(mappedBy="item"/*, cascade=CascadeType.ALL*/)
 	private Set<ItemCategory> itemCategories = new HashSet<ItemCategory>();
 
 	public Item() {
@@ -62,6 +67,14 @@ public class Item {
 
 	public void setItemCategories(Set<ItemCategory> itemCategories) {
 		this.itemCategories = itemCategories;
+	}
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
 	}
 	
 	

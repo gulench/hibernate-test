@@ -22,10 +22,13 @@ public class HibernateConfiguration {
 		Properties props = new Properties();
 		props.put("hibernate.dialect", H2Dialect.class.getName());
 		props.put("hibernate.format_sql", "true");
-		props.put("hibernate.show_sql", "true");
+		props.put("hibernate.show_sql", "false");
 
 		AnnotationSessionFactoryBean bean = new AnnotationSessionFactoryBean();
-		bean.setAnnotatedClasses(new Class[]{Item.class, Category.class, ItemCategory.class, OrderItem.class, Order.class});		
+		bean.setAnnotatedClasses(new Class[]{
+			Inventory.class, Responsible.class, Item.class, Category.class, ItemCategory.class, 
+			OrderItem.class, Order.class
+		});		
 		bean.setHibernateProperties(props);
 		bean.setDataSource(this.dataSource);
 		bean.setSchemaUpdate(true);

@@ -34,8 +34,10 @@ public class OrderPersistenceTests {
 		Item item = new Item("PROD", 88.99d);
 		Category category = new Category("CAT1");
 		
+
 		session.save(category);
 		session.save(item);
+
 		ItemCategory itemCategory = new ItemCategory(category, item, "GULEN");
 		session.save(itemCategory);
 	}
@@ -47,10 +49,15 @@ public class OrderPersistenceTests {
 		
 		Order order = new Order();
 		order.setCustomer("CUST");
+		
 		OrderItem item = new OrderItem((Item) session.load(Item.class, 1L), 12);
 		item.setOrder(order);
 		order.getItems().add(item);
 		
+		OrderItem item2 = new OrderItem((Item) session.load(Item.class, 1L), 22);
+		item2.setOrder(order);
+		order.getItems().add(item2);
+
 		session.save(order);
 		assertNotNull(order.getId());
 		
@@ -65,13 +72,23 @@ public class OrderPersistenceTests {
 		Order order = cloneOrder(COPY);
 		order.setCustomer("CUST2");
 		
+		for (OrderItem item: order.getItems()) {
+			System.out.println("-- item: " + 
+					// item.getItem().getId() + ": " + 
+					item.getQuantity());
+			if (item.getQuantity() == 12) {
+				item.setQuantity(item.getQuantity() + 1);
+			}
+		}
+		
 		order = (Order) sessionFactory.getCurrentSession().merge(order);
 		//sessionFactory.getCurrentSession().saveOrUpdate(order);
 		
 		// System.out.println("========================== Version: " + order.getVersion());
 		COPY = cloneOrder(order);
 	}
-	
+
+	/*
 	@Test
 	@Transactional
 	public void testConcurrentModification() {
@@ -84,6 +101,7 @@ public class OrderPersistenceTests {
 		order = (Order) sessionFactory.getCurrentSession().merge(order);
 		//sessionFactory.getCurrentSession().saveOrUpdate(order);
 	}
+	*/
 
 	private Order cloneOrder(Order order) {
 		Order o = new Order();
